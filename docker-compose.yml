@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  php:
+    build: './.docker/php/'
+    ports: 
+            - "80:80"
+    volumes:
+      - ./src/:/var/www/html/
+      - ./.docker/apache/demo.apache.conf:/etc/apache2/sites-enabled/demo.conf
+  mysql:
+    image: mysql:5.6.40
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=data_mau
+      - MYSQL_ROOT_PASSWORD=example
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - '8081:80'
